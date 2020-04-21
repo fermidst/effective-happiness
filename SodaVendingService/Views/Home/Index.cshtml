@@ -1,0 +1,71 @@
+﻿@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron text-center">
+    <h4 class="display-4">Antonova Alina, 4335</h4>
+</div>
+
+<div class="row justify-content-center">
+    <h4 class="lead">Вставьте купюры в купюроприемник</h4>
+</div>
+
+<div class="row justify-content-center" role="group" aria-label="Rubles">
+    <div class="btn-group btn-group-lg">
+        @Html.ActionLink("1 рубль", "Insert1Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("2 рубля", "Insert2Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("5 рублей", "Insert5Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("10 рублей", "Insert10Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("50 рублей", "Insert50Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("100 рублей", "Insert100Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+    </div>
+</div>
+
+<br/>
+
+<div class="row justify-content-center">
+    @switch (Model.VendingSession.VendingState)
+    {
+        case VendingStates.NoMoney:
+            <h4 class="lead">Ожидание средств. Текущий баланс: @Model.VendingSession.CoinsInTray р.</h4>
+            break;
+        case VendingStates.HasMoney:
+            <h4 class="lead">Выберите продукт ниже. Текущий баланс @Model.VendingSession.CoinsInTray р.</h4>
+            break;
+        case VendingStates.Success:
+            <h4 class="lead">Спасибо за покупку. Заберите сдачу: @Model.VendingSession.Change р.</h4>
+            break;
+        case VendingStates.Failure:
+            <h4 class="lead">К сожалению, данный продукт закончился. Заберите сдачу: @Model.VendingSession.Change р.</h4>
+            break;
+        case VendingStates.NotEnough:
+            <h4 class="lead">Недостаточно средств. Текущий баланс: @Model.VendingSession.CoinsInTray р.</h4>
+            break;
+    }
+
+</div>
+<div class="row justify-content-center">
+    @foreach (var soda in Model.Sodas)
+    {
+        Model.VendingSession.SelectedSodaId = soda.SodaId;
+        <div class="card mx-2 my-2" style="max-width: 270px; max-height: 250px">
+            <div class="row no-gutters">
+                <div class="col-md-4">
+                    <img width="45px" src="@Url.Content(soda.SodaImageUrl)" class="card-img" alt="@soda.SodaName">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body d-flex align-content-center flex-column">
+                        <h5 class="card-title">@soda.SodaName</h5>
+                        <p class="card-text">Цена: @soda.SodaPrice</p>
+                        <p class="card-text">В наличии: @soda.SodaStock</p>
+                        <a class="btn btn-primary" href="@Url.Action("DispenseSoda", "Home", Model.VendingSession)">
+                            Купить
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
