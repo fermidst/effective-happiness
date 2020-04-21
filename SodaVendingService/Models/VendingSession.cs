@@ -23,6 +23,13 @@ namespace SodaVendingService.Models
                 CoinsInTray += value;
         }
 
+        public void Refund()
+        {
+            VendingState = VendingStates.Refund;
+            Change = CoinsInTray;
+            CoinsInTray = 0;
+        }
+
         public void DispenseSoda(int sodaId, IList<Soda> sodas)
         {
             var soda = sodas.Single(s => s.SodaId == sodaId);

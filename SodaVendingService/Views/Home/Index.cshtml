@@ -20,6 +20,7 @@
         @Html.ActionLink("10 рублей", "Insert10Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
         @Html.ActionLink("50 рублей", "Insert50Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
         @Html.ActionLink("100 рублей", "Insert100Money", Model.VendingSession, new {@class = "btn btn-primary btn-lg"})
+        @Html.ActionLink("Возврат средств", "Refund", Model.VendingSession, new {@class = "btn btn-danger btn-lg"})
     </div>
 </div>
 
@@ -42,6 +43,9 @@
             break;
         case VendingStates.NotEnough:
             <h4 class="lead">Недостаточно средств. Текущий баланс: @Model.VendingSession.CoinsInTray р.</h4>
+            break;
+        case VendingStates.Refund:
+            <h4 class="lead">Вы запросили возврат средств. Заберите сдачу: @Model.VendingSession.Change р.</h4>
             break;
     }
 

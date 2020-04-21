@@ -112,6 +112,18 @@ namespace SodaVendingService.Controllers
             return View("Index", indexViewModel);
         }
 
+        public IActionResult Refund(VendingSession session)
+        {
+            session.Refund();
+
+            var indexViewModel = new IndexViewModel
+            {
+                Sodas = _sodas,
+                VendingSession = session
+            };
+            return View("Index", indexViewModel);
+        }
+
         public IActionResult Privacy()
         {
             return View();
